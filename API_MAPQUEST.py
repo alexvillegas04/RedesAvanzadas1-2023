@@ -34,11 +34,12 @@ while True:
     dest = input("Ingrese su destino (Ciudad, País): ")
     if dest == "salir" or dest == "S":
         break
+    locale = 'es_ES'
 
     limpiar_consola()
     mostrar_cargando()
 
-    url = main_api + urllib.parse.urlencode({"key": key, "from": orig, "to": dest, "unit": "k"})
+    url = main_api + urllib.parse.urlencode({"key": key, "from": orig, "to": dest, "unit": "k", "locale": locale})
 
     data = requests.get(url).json()
     status = data["info"]["statuscode"]
@@ -56,3 +57,6 @@ while True:
         print("                                (   _    _ _\\")
         print("_________________________________`-(_)--(_)-____________________")
         print("\n")
+        for Indic in data["route"]["legs"][0]["maneuvers"]:
+            print(Indic["narrative"], "({:.1f}km)".format(Indic["distance"] * 1.61))
+        print("===============================================================\n")
